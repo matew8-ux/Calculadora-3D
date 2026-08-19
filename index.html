@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0,
+                   maximum-scale=1.0, user-scalable=no">
+
+    <meta name="theme-color" content="#007aff">
+
+    <link rel="manifest" href="manifest.json">
+
+    <title>Calculadora 3D</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 18px;
+            font-family: -apple-system, BlinkMacSystemFont,
+                         "Segoe UI", Arial, sans-serif;
+
+            background: #f2f2f7;
+            color: #1c1c1e;
+        }
+
+        .contenedor {
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .encabezado {
+            text-align: center;
+            margin: 10px 0 20px;
+        }
+
+        .encabezado h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .encabezado p {
+            margin: 7px 0 0;
+            color: #6e6e73;
+        }
+
+        .tarjeta {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.08);
+        }
+
+        .tarjeta h2 {
+            margin: 0 0 18px;
+            font-size: 20px;
+        }
+
+        .campo {
+            margin-bottom: 15px;
+        }
+
+        .campo label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d1d1d6;
+            border-radius: 11px;
+            font-size: 17px;
+            background: #fff;
+            color: #1c1c1e;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: #007aff;
+        }
+
+        .botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            font-size: 17px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .calcular {
+            background: #007aff;
+            color: white;
+        }
+
+        .restablecer {
+            background: #e5e5ea;
+            color: #1c1c1e;
+        }
+
+        .precio {
+            background: #1c1c1e;
+            color: white;
+            text-align: center;
+        }
+
+        .precio h2 {
+            margin-bottom: 8px;
+        }
+
+        #precioFinal {
+            font-size: 38px;
+            font-weight: 800;
+        }
+
+        .resultado {
+            font-family: monospace;
+            white-space: pre-wrap;
+            line-height: 1.55;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .guardado {
+            text-align: center;
+            color: #34c759;
+            font-size: 13px;
+            margin-top: 10px;
+        }
+
+        @media (min-width: 650px) {
+
+            .formulario {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 15px;
+            }
+
+            .campo {
+                margin-bottom: 0;
+            }
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <div class="encabezado">
+
+        <h1>🖨️ Calculadora 3D</h1>
+
+        <p>Bambu Lab A1 mini · Venta minorista</p>
+
+    </div>
+
+
+    <!-- DATOS -->
+
+    <div class="tarjeta">
+
+        <h2>Datos de la impresión</h2>
+
+        <div class="formulario">
+
+            <div class="campo">
+                <label>Gramos de filamento</label>
+
+                <input
+                    id="gramos"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="50">
+            </div>
+
+
+            <div class="campo">
+                <label>Horas de impresión</label>
+
+                <input
+                    id="horas"
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    value="2.5">
+            </div>
+
+
+            <div class="campo">
+                <label>Precio del filamento ($/kg)</label>
+
+                <input
+                    id="precioFilamento"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="350">
+            </div>
+
+
+            <div class="campo">
+                <label>Mantenimiento por hora ($)</label>
+
+                <input
+                    id="mantenimiento"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="1.50">
+            </div>
+
+
+            <div class="campo">
+                <label>Empaque ($)</label>
+
+                <input
+                    id="empaque"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="5">
+            </div>
+
+
+            <div class="campo">
+                <label>Otros costos ($)</label>
+
+                <input
+                    id="otros"
+                    type="number"
+                    min="0"
+                    step="0.01"
+                    value="0">
+            </div>
+
+
+            <div class="campo">
+                <label>Margen para fallos (%)</label>
+
+                <input
+                    id="fallos"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="10">
+            </div>
+
+
+            <div class="campo">
+                <label>Ganancia (%)</label>
+
+                <input
+                    id="ganancia"
+                    type="number"
+                    min="0"
+                    step="1"
+                    value="40">
+            </div>
+
+        </div>
+
+
+        <div class="botones">
+
+            <button
+                class="calcular"
+                onclick="calcular()">
+                CALCULAR
+            </button>
+
+            <button
+                class="restablecer"
+                onclick="restablecer()">
+                RESTABLECER
+            </button>
+
+        </div>
+
+        <div
+            id="guardado"
+            class="guardado">
+        </div>
+
+    </div>
+
+
+    <!-- PRECIO -->
+
+    <div class="tarjeta precio">
+
+        <h2>PRECIO DE VENTA</h2>
+
+        <div id="precioFinal">
+            $0.00 MXN
+        </div>
+
+    </div>
+
+
+    <!-- DESGLOSE -->
+
+    <div class="tarjeta">
+
+        <h2>Desglose</h2>
+
+        <div id="resultado" class="resultado">
+Introduce los datos y pulsa CALCULAR.
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    // =====================================================
+    // REGISTRAR SERVICE WORKER
+    // =====================================================
+
+    if ("serviceWorker" in navigator) {
+
+        window.addEventListener("load", () => {
+
+            navigator.serviceWorker.register("sw.js")
+                .catch(error => {
+                    console.log(
+                        "Error registrando Service Worker:",
+                        error
+                    );
+                });
+
+        });
+
+    }
+
+
+    // =====================================================
+    // FORMATO DE DINERO
+    // =====================================================
+
+    function dinero(numero) {
+
+        return numero.toLocaleString(
+            "es-MX",
+            {
+                style: "currency",
+                currency: "MXN"
+            }
+        );
+
+    }
+
+
+    // =====================================================
+    // OBTENER NÚMERO
+    // =====================================================
+
+    function numero(id) {
+
+        const valor =
+            parseFloat(
+                document.getElementById(id).value
+            );
+
+        return isNaN(valor) ? 0 : valor;
+
+    }
+
+
+    // =====================================================
+    // GUARDAR CONFIGURACIÓN
+    // =====================================================
+
+    function guardarDatos() {
+
+        const datos = {
+
+            precioFilamento:
+                document.getElementById(
+                    "precioFilamento"
+                ).value,
+
+            mantenimiento:
+                document.getElementById(
+                    "mantenimiento"
+                ).value,
+
+            empaque:
+                document.getElementById(
+                    "empaque"
+                ).value,
+
+            otros:
+                document.getElementById(
+                    "otros"
+                ).value,
+
+            fallos:
+                document.getElementById(
+                    "fallos"
+                ).value,
+
+            ganancia:
+                document.getElementById(
+                    "ganancia"
+                ).value
+
+        };
+
+        localStorage.setItem(
+            "configuracion3D",
+            JSON.stringify(datos)
+        );
+
+        document.getElementById(
+            "guardado"
+        ).textContent =
+            "✓ Configuración guardada";
+
+    }
+
+
+    // =====================================================
+    // CARGAR CONFIGURACIÓN
+    // =====================================================
+
+    function cargarDatos() {
+
+        const guardado =
+            localStorage.getItem(
+                "configuracion3D"
+            );
+
+        if (!guardado) {
+            return;
+        }
+
+        const datos =
+            JSON.parse(guardado);
+
+
+        if (datos.precioFilamento !== undefined)
+            document.getElementById(
+                "precioFilamento"
+            ).value =
+                datos.precioFilamento;
+
+
+        if (datos.mantenimiento !== undefined)
+            document.getElementById(
+                "mantenimiento"
+            ).value =
+                datos.mantenimiento;
+
+
+        if (datos.empaque !== undefined)
+            document.getElementById(
+                "empaque"
+            ).value =
+                datos.empaque;
+
+
+        if (datos.otros !== undefined)
+            document.getElementById(
+                "otros"
+            ).value =
+                datos.otros;
+
+
+        if (datos.fallos !== undefined)
+            document.getElementById(
+                "fallos"
+            ).value =
+                datos.fallos;
+
+
+        if (datos.ganancia !== undefined)
+            document.getElementById(
+                "ganancia"
+            ).value =
+                datos.ganancia;
+
+    }
+
+
+    // =====================================================
+    // CALCULAR
+    // =====================================================
+
+    function calcular() {
+
+        const gramos =
+            numero("gramos");
+
+        const horas =
+            numero("horas");
+
+        const precioFilamento =
+            numero("precioFilamento");
+
+        const mantenimiento =
+            numero("mantenimiento");
+
+        const empaque =
+            numero("empaque");
+
+        const otros =
+            numero("otros");
+
+        const fallos =
+            numero("fallos");
+
+        const ganancia =
+            numero("ganancia");
+
+
+        // FILAMENTO
+
+        const costoFilamento =
+            (gramos / 1000)
+            * precioFilamento;
+
+
+        // MANTENIMIENTO
+
+        const costoMantenimiento =
+            mantenimiento * horas;
+
+
+        // COSTO BASE
+
+        const costoBase =
+            costoFilamento
+            + costoMantenimiento
+            + empaque
+            + otros;
+
+
+        // FALLAS
+
+        const costoFallos =
+            costoBase * (fallos / 100);
+
+
+        const costoReal =
+            costoBase + costoFallos;
+
+
+        // GANANCIA
+
+        const dineroGanancia =
+            costoReal * (ganancia / 100);
+
+
+        const precioFinal =
+            costoReal + dineroGanancia;
+
+
+        // PRECIO GRANDE
+
+        document.getElementById(
+            "precioFinal"
+        ).textContent =
+            dinero(precioFinal);
+
+
+        // DESGLOSE
+
+        const texto =
+
+`DATOS DE LA IMPRESIÓN
+
+Filamento utilizado:     ${gramos.toFixed(2)} g
+Tiempo de impresión:     ${horas.toFixed(2)} h
+
+
+COSTOS
+
+Filamento:               ${dinero(costoFilamento)}
+Mantenimiento:           ${dinero(costoMantenimiento)}
+Empaque:                 ${dinero(empaque)}
+Otros costos:            ${dinero(otros)}
+
+
+────────────────────────────
+
+COSTO BASE:              ${dinero(costoBase)}
+
+
+MARGEN PARA FALLOS
+
+${fallos.toFixed(1)}%:                  ${dinero(costoFallos)}
+
+
+────────────────────────────
+
+COSTO REAL:              ${dinero(costoReal)}
+
+
+GANANCIA
+
+${ganancia.toFixed(1)}%:                  ${dinero(dineroGanancia)}
+
+
+════════════════════════════
+
+PRECIO DE VENTA:         ${dinero(precioFinal)}
+
+════════════════════════════`;
+
+
+        document.getElementById(
+            "resultado"
+        ).textContent = texto;
+
+
+        // Guardar configuración
+
+        guardarDatos();
+
+    }
+
+
+    // =====================================================
+    // RESTABLECER
+    // =====================================================
+
+    function restablecer() {
+
+        document.getElementById(
+            "gramos"
+        ).value = 50;
+
+        document.getElementById(
+            "horas"
+        ).value = 2.5;
+
+        document.getElementById(
+            "precioFilamento"
+        ).value = 350;
+
+        document.getElementById(
+            "mantenimiento"
+        ).value = 1.50;
+
+        document.getElementById(
+            "empaque"
+        ).value = 5;
+
+        document.getElementById(
+            "otros"
+        ).value = 0;
+
+        document.getElementById(
+            "fallos"
+        ).value = 10;
+
+        document.getElementById(
+            "ganancia"
+        ).value = 40;
+
+
+        document.getElementById(
+            "precioFinal"
+        ).textContent =
+            "$0.00 MXN";
+
+
+        document.getElementById(
+            "resultado"
+        ).textContent =
+            "Introduce los datos y pulsa CALCULAR.";
+
+    }
+
+
+    // =====================================================
+    // CARGAR AL ABRIR
+    // =====================================================
+
+    cargarDatos();
+
+</script>
+
+</body>
+</html>

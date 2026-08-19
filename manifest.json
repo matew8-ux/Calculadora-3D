@@ -1,0 +1,11 @@
+{
+    "name": "Calculadora de Precios 3D",
+    "short_name": "Calculadora 3D",
+    "description": "Calculadora de precios para impresiones 3D con Bambu Lab A1 mini",
+    "start_url": "./",
+    "display": "standalone",
+    "background_color": "#f2f2f7",
+    "theme_color": "#007aff",
+    "orientation": "portrait",
+    "icons": []
+}
