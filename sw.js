@@ -1,10 +1,11 @@
-const CACHE_NAME = "calculadora-3d-v1";
+const CACHE_NAME = "calculadora-3d-v2";
 
 const ARCHIVOS = [
     "./",
     "./index.html",
     "./manifest.json",
-    "./sw.js"
+    "./sw.js",
+    "./apple-touch-icon-v2.png"
 ];
 
 self.addEventListener("install", event => {
